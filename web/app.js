@@ -77,6 +77,16 @@ const historyStatus = document.getElementById('historyStatus');
 
 // Load device history from localStorage
 function loadDeviceHistory() {
+    if (!window.isSecureContext) {
+        console.warn("Web Bluetooth requires HTTPS (Secure Context) to work on mobile devices.");
+        const helpText = document.createElement('p');
+        helpText.style.color = '#ff4b4b';
+        helpText.style.fontSize = '0.8rem';
+        helpText.style.marginTop = '15px';
+        helpText.innerHTML = '⚠️ <b>HTTPS Required:</b> Chrome on Android requires HTTPS to use Bluetooth. Testing over a local IP (HTTP) will not work.';
+        welcomeScreen.querySelector('.hero-content').appendChild(helpText);
+    }
+
     try {
         const saved = localStorage.getItem('htram_device_history');
         if (saved) {
@@ -139,23 +149,46 @@ function updateDeviceHistoryUI() {
 
 // Reconnect to saved device
 async function reconnectToDevice(deviceId) {
+    if (!window.isSecureContext) {
+        alert("Web Bluetooth requires HTTPS to function on mobile devices. Please use a secure connection or test on localhost.");
+        return;
+    }
+
     try {
         console.log('Attempting to reconnect to:', deviceId);
 
-        // Request device with specific ID filter
+        // 1. Try to find the device in already permitted devices (no dialog!)
+        if (navigator.bluetooth.getDevices) {
+            const devices = await navigator.bluetooth.getDevices();
+            const existing = devices.find(d => d.id === deviceId);
+            if (existing) {
+                console.log('Found device in permitted list, connecting directly...');
+                try {
+                    await connectToDevice(existing);
+                    return;
+                } catch (e) {
+                    console.log('Direct connection failed, falling back to requestDevice', e);
+                }
+            }
+        }
+
+        // 2. Fallback to requestDevice with name filter
+        const savedDevice = deviceHistory.find(d => d.id === deviceId);
+        const filter = savedDevice ? { name: savedDevice.name } : { namePrefix: 'HTRAM' };
+
         bleDevice = await navigator.bluetooth.requestDevice({
-            filters: [{ services: [SERVICE_UUID] }],
+            filters: [filter],
             optionalServices: [SERVICE_UUID]
         });
 
-        if (bleDevice.id === deviceId) {
-            await connectToDevice(bleDevice);
-        } else {
-            alert('Selected device does not match. Please select the correct device.');
-        }
+        // Even if ID changed (though it shouldn't on same origin), we connect to the selected one
+        await connectToDevice(bleDevice);
+
     } catch (error) {
         console.error('Reconnection failed:', error);
-        alert('Reconnection failed. Device may be out of range or not in pairing mode.');
+        if (error.name !== 'NotFoundError' && error.name !== 'AbortError') {
+            alert('Reconnection failed: ' + error.message);
+        }
     }
 }
 

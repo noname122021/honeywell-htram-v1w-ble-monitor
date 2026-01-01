@@ -150,44 +150,41 @@ function updateDeviceHistoryUI() {
 // Reconnect to saved device
 async function reconnectToDevice(deviceId) {
     if (!window.isSecureContext) {
-        alert("Web Bluetooth requires HTTPS to function on mobile devices. Please use a secure connection or test on localhost.");
+        alert("Web Bluetooth requires HTTPS to function on mobile devices. Please use a secure connection (GitHub Pages) or test on localhost.");
         return;
     }
 
     try {
         console.log('Attempting to reconnect to:', deviceId);
 
-        // 1. Try to find the device in already permitted devices (no dialog!)
+        // 1. Попытка "тихого" подключения к уже разрешенным устройствам
         if (navigator.bluetooth.getDevices) {
             const devices = await navigator.bluetooth.getDevices();
             const existing = devices.find(d => d.id === deviceId);
             if (existing) {
-                console.log('Found device in permitted list, connecting directly...');
+                console.log('Device found in permitted list. Connecting...');
                 try {
                     await connectToDevice(existing);
                     return;
                 } catch (e) {
-                    console.log('Direct connection failed, falling back to requestDevice', e);
+                    console.warn('Direct connection failed, showing dialog...', e);
                 }
             }
         }
 
-        // 2. Fallback to requestDevice with name filter
-        const savedDevice = deviceHistory.find(d => d.id === deviceId);
-        const filter = savedDevice ? { name: savedDevice.name } : { namePrefix: 'HTRAM' };
-
+        // 2. Если тихое не сработало — вызываем окно с надежным фильтром по префиксу
+        console.log('Showing device picker with HTRAM filter...');
         bleDevice = await navigator.bluetooth.requestDevice({
-            filters: [filter],
+            filters: [{ namePrefix: 'HTRAM' }],
             optionalServices: [SERVICE_UUID]
         });
 
-        // Even if ID changed (though it shouldn't on same origin), we connect to the selected one
         await connectToDevice(bleDevice);
 
     } catch (error) {
-        console.error('Reconnection failed:', error);
+        console.error('Reconnection error:', error);
         if (error.name !== 'NotFoundError' && error.name !== 'AbortError') {
-            alert('Reconnection failed: ' + error.message);
+            alert('Error: ' + error.message);
         }
     }
 }

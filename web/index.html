@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honeywell Air Monitor (HTRAM-V1-W)</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="app-container">
+        <header>
+            <div class="logo-container">
+                <span class="brand">HONEYWELL</span>
+                <span class="model">HTRAM-V1-W</span>
+            </div>
+            <button id="connectBtn" class="btn-primary">Connect Device</button>
+        </header>
+
+        <main class="dashboard" id="dashboard" style="display: none;">
+            <div class="sensor-grid">
+                <!-- CO2 Card -->
+                <div class="sensor-card co2">
+                    <div class="card-header">
+                        <span class="icon">💨</span>
+                        <h3>CO2 Level</h3>
+                    </div>
+                    <div class="value-container">
+                        <span id="co2Value" class="value">---</span>
+                        <span class="unit">ppm</span>
+                    </div>
+                    <div id="co2Status" class="status-indicator">Wait for data...</div>
+                </div>
+
+                <!-- Temperature & Humidity Row -->
+                <div class="dual-row">
+                    <div class="sensor-card temp">
+                        <div class="card-header">
+                            <span class="icon">🌡️</span>
+                            <h3>Temp</h3>
+                        </div>
+                        <div class="value-container">
+                            <span id="tempValue" class="value">---</span>
+                            <span class="unit">°C</span>
+                        </div>
+                    </div>
+                    <div class="sensor-card hum">
+                        <div class="card-header">
+                            <span class="icon">💧</span>
+                            <h3>Humidity</h3>
+                        </div>
+                        <div class="value-container">
+                            <span id="humValue" class="value">---</span>
+                            <span class="unit">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battery & Charging -->
+                <div class="sensor-card battery">
+                    <div class="card-header">
+                        <span class="icon">🔋</span>
+                        <h3>Battery</h3>
+                    </div>
+                    <div class="battery-visual">
+                        <div class="battery-body">
+                            <div id="batteryLevel" class="battery-fill" style="width: 0%;"></div>
+                        </div>
+                        <span id="batteryText" class="battery-text">---</span>
+                    </div>
+                    <div id="chargingIndicator" class="charging-tag" style="visibility: hidden;">⚡ Charging</div>
+                </div>
+            </div>
+            
+            <footer class="live-status">
+                <div class="dot green" id="statusDot"></div>
+                <span id="statusLabel">Disconnected</span>
+                <span id="timestamp" class="timestamp"></span>
+            </footer>
+        </main>
+
+        <section id="welcome" class="welcome-screen">
+            <div class="hero-content">
+                <h1>Web Bluetooth Monitor</h1>
+                <p>Monitor your air quality directly from Chrome. No installation required.</p>
+                <div class="pairing-tips">
+                    <p>💡 Tip: Double-press the top button on your sensor if the Bluetooth icon is not flashing.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

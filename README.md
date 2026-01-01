@@ -1,5 +1,12 @@
 # Honeywell Air Monitor (HTRAM-V1-W) Bluetooth Monitor
 
+![Python 3.7+](https://img.shields.io/badge/Python-3.7+-3776AB?style=flat-square&logo=python&logoColor=white)
+![Web Bluetooth](https://img.shields.io/badge/Web_Bluetooth-Supported-blue?style=flat-square&logo=bluetooth&logoColor=white)
+![Platform: Windows](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)
+![Platform: macOS](https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=white)
+![Platform: Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)
+![Platform: iOS](https://img.shields.io/badge/iOS_(Bluefy)-000000?style=flat-square&logo=apple&logoColor=white)
+
 <p align="center">
   <img src="image.png" height="300">
   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -55,16 +62,16 @@ The device does not stream data automatically by default. To receive updates, th
 
 For a zero-installation experience, use the modern Web UI inspired by the ATC1441 projects.
 
-### Features
-*   **Zero Install:** Works directly in Chrome/Edge via GitHub Pages.
-*   **Full Visualization:** Glassmorphism UI with real-time status.
-*   **Battery Indicators:** Visual battery level and charging animation.
-*   **Air Quality Status:** Immediate visual feedback (Excellent/Moderate/Poor).
+### Browser Compatibility
+*   **Desktop:** Chrome, Edge, Opera (macOS, Windows, Linux).
+*   **Android:** Chrome for Android.
+*   **iOS (iPhone/iPad):** Not supported in Safari. Use the [**Bluefy Web Ble Browser**](https://apps.apple.com/app/bluefy-web-ble-browser/id1492822232) from the App Store.
 
 ### How to use:
 1. **Open Online:** [**Launch Web Dashboard**](https://noname122021.github.io/honeywell-htram-v1w-ble-monitor/web/)
-2. Ensure your sensor is in pairing mode (Bluetooth icon flashing).
-3. Click **Connect Device** and select your sensor.
+2. **On iPhone:** Use the link inside the **Bluefy** browser.
+3. Ensure your sensor is in pairing mode (Bluetooth icon flashing).
+4. Click **Connect Device** and select your sensor.
 
 ---
 

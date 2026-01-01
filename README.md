@@ -265,6 +265,7 @@ The web dashboard provides a **zero-installation**, **cross-platform** monitorin
 - ✅ **Real-Time Monitoring:** Live CO2, Temperature, Humidity, Battery, and Charging status
 - ✅ **Historical Data Viewer:** Download and visualize up to 90 days of CO2 data with an interactive chart
 - ✅ **Automatic Time Sync:** Device clock is synchronized on connection
+- ✅ **Device History:** Remembers previous connections for quick one-click access
 - ✅ **No Installation Required:** Works directly in your browser
 - ✅ **Responsive Design:** Adapts to desktop, tablet, and mobile screens
 

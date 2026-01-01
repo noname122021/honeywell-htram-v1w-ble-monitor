@@ -66,6 +66,7 @@ let historyChart = null;
 let historyDataPoints = [];
 let historyTimeout = null;
 let lastHistoryResponse = null;
+let deviceHistory = [];
 
 const connectBtn = document.getElementById('connectBtn');
 const historyBtn = document.getElementById('historyBtn');
@@ -73,6 +74,90 @@ const welcomeScreen = document.getElementById('welcome');
 const dashboard = document.getElementById('dashboard');
 const historySection = document.getElementById('historySection');
 const historyStatus = document.getElementById('historyStatus');
+
+// Load device history from localStorage
+function loadDeviceHistory() {
+    try {
+        const saved = localStorage.getItem('htram_device_history');
+        if (saved) {
+            deviceHistory = JSON.parse(saved);
+            updateDeviceHistoryUI();
+        }
+    } catch (e) {
+        console.error('Failed to load device history', e);
+    }
+}
+
+// Save device to history
+function saveDeviceToHistory(device) {
+    const deviceInfo = {
+        id: device.id,
+        name: device.name || 'Unknown Device',
+        lastConnected: new Date().toISOString()
+    };
+
+    // Remove if already exists
+    deviceHistory = deviceHistory.filter(d => d.id !== device.id);
+
+    // Add to beginning
+    deviceHistory.unshift(deviceInfo);
+
+    // Keep only last 5 devices
+    deviceHistory = deviceHistory.slice(0, 5);
+
+    // Save to localStorage
+    try {
+        localStorage.setItem('htram_device_history', JSON.stringify(deviceHistory));
+        updateDeviceHistoryUI();
+    } catch (e) {
+        console.error('Failed to save device history', e);
+    }
+}
+
+// Update device history UI
+function updateDeviceHistoryUI() {
+    const container = document.getElementById('deviceHistoryList');
+    if (!container) return;
+
+    if (deviceHistory.length === 0) {
+        container.innerHTML = '<p style="color: #888; font-size: 0.9rem;">No previous connections</p>';
+        return;
+    }
+
+    container.innerHTML = deviceHistory.map(device => `
+        <div class="history-device-item" data-device-id="${device.id}">
+            <div class="history-device-info">
+                <strong>${device.name}</strong>
+                <small>Last: ${new Date(device.lastConnected).toLocaleDateString()}</small>
+            </div>
+            <button class="reconnect-btn" onclick="reconnectToDevice('${device.id}')">
+                Reconnect
+            </button>
+        </div>
+    `).join('');
+}
+
+// Reconnect to saved device
+async function reconnectToDevice(deviceId) {
+    try {
+        console.log('Attempting to reconnect to:', deviceId);
+
+        // Request device with specific ID filter
+        bleDevice = await navigator.bluetooth.requestDevice({
+            filters: [{ services: [SERVICE_UUID] }],
+            optionalServices: [SERVICE_UUID]
+        });
+
+        if (bleDevice.id === deviceId) {
+            await connectToDevice(bleDevice);
+        } else {
+            alert('Selected device does not match. Please select the correct device.');
+        }
+    } catch (error) {
+        console.error('Reconnection failed:', error);
+        alert('Reconnection failed. Device may be out of range or not in pairing mode.');
+    }
+}
 
 connectBtn.addEventListener('click', async () => {
     try {
@@ -99,6 +184,11 @@ async function connectDevice() {
         optionalServices: [SERVICE_UUID]
     });
 
+    await connectToDevice(bleDevice);
+}
+
+async function connectToDevice(device) {
+    bleDevice = device;
     bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
 
     console.log("Connecting to GATT Server...");
@@ -121,6 +211,9 @@ async function connectDevice() {
 
     console.log("Syncing time...");
     await syncTime();
+
+    // Save device to history
+    saveDeviceToHistory(bleDevice);
 
     // Update UI
     connectBtn.textContent = "Disconnect";
@@ -393,3 +486,4 @@ function onDisconnected() {
     dashboard.style.display = "none";
     document.getElementById('statusLabel').textContent = "Disconnected";
 }
+loadDeviceHistory();

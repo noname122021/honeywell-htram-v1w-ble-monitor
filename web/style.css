@@ -301,3 +301,68 @@ footer {
         opacity: 1;
     }
 }
+/* Device History Styles */
+.previous-connections h3 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.history-device-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.history-device-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-blue);
+    transform: translateX(5px);
+}
+
+.history-device-info {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-device-info strong {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.history-device-info small {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.reconnect-btn {
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reconnect-btn:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+}

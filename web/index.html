@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="background-overlay"></div>
     <div class="app-container">
@@ -72,12 +74,26 @@
                     <div id="chargingIndicator" class="charging-tag" style="visibility: hidden;">⚡ Charging</div>
                 </div>
             </div>
-            
+
             <footer class="live-status">
                 <div class="dot green" id="statusDot"></div>
                 <span id="statusLabel">Disconnected</span>
                 <span id="timestamp" class="timestamp"></span>
             </footer>
+
+            <div class="actions" style="margin-top: 20px;">
+                <button id="historyBtn" class="secondary-btn" style="width: 100%;">Fetch History Log</button>
+            </div>
+
+            <div id="historySection"
+                style="display: none; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <h3>Historical Data (90 Days)</h3>
+                <div class="chart-container" style="position: relative; height:200px; width:100%; margin-top: 15px;">
+                    <canvas id="historyChart"></canvas>
+                </div>
+                <div id="historyStatus" style="font-size: 0.8rem; color: #888; margin-top: 10px; text-align: center;">
+                </div>
+            </div>
         </main>
 
         <section id="welcome" class="welcome-screen">
@@ -91,6 +107,9 @@
         </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

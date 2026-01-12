@@ -38,6 +38,7 @@ The Honeywell HTRAM device uses a proprietary BLE protocol. While it broadcasts 
 *   **Notify Characteristic (Data Stream):** `f833d6c0-6e0b-11e4-9136-0002a5d5c51b`
 
 ### Protocol Documentation
+> **Note:** For advanced details on **Firmware Updates** and **WiFi/Zigbee commands**, see the full [**Protocol Reference**](PROTOCOL.md).
 
 #### 1. Initialization
 The device typically expects an initialization command to set the BLE mode upon connection.

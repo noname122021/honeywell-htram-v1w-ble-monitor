@@ -8,13 +8,17 @@ This document contains advanced technical details extracted from the decompiled 
 
 The device uses a dedicated **Request-Response** state machine for Over-the-Air (OTA) firmware updates via BLE. The process involves four distinct stages: Check, Data Transfer, Verification, and Installation.
 
-### 🆔 Device Models & SKUs
-The application code references two distinct device SKUs, likely corresponding to different hardware revisions or feature sets:
+### 🆔 Device Models & Hardware
+The application code and PCB markings reveal the following technical details:
 
-*   **SKU 1617 (MOV1):** Associated with the "BLE Device" preference. Likely the standard HTRAM-V1.
-*   **SKU 1619 (MOV2):** Associated with the "WiFi Device" preference. Likely an advanced version with native WiFi capabilities.
+*   **Codename:** The project and firmware are internally referred to as **"StormShadow"**, which is also etched on the device PCB.
+*   **SKUs:**
+    *   **SKU 1617 (MOV1):** Associated with the "BLE Device" preference. Likely the standard HTRAM-V1.
+    *   **SKU 1619 (MOV2):** Associated with the "WiFi Device" preference. Likely an advanced version with native WiFi capabilities.
+*   **Hardware Components:** The device is built around a **GD32F150** MCU and a **Winbond 25Q32** SPI Flash.
 
-**Codename:** The project and firmware are internally referred to as **"StormShadow"**.
+For a deep dive into the physical components and memory map, see [**HARDWARE.md**](HARDWARE.md).
+
 
 ### Command Class: `0x22`
 
